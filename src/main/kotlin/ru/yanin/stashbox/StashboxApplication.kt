@@ -1,4 +1,4 @@
-package ru.yanin.stashbox_bot
+package ru.yanin.stashbox
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

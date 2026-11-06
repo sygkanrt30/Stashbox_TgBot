@@ -3,7 +3,7 @@ plugins {
     kotlin("plugin.spring") version "2.4.0"
     id("org.springframework.boot")
     id("io.spring.dependency-management")
-    id("io.gitlab.arturbosch.detekt")
+    id("dev.detekt")
     id("org.jlleitschuh.gradle.ktlint")
 }
 
@@ -19,7 +19,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(kotlin("test"))
 }
@@ -29,7 +28,7 @@ kotlin {
     compilerOptions {
         freeCompilerArgs.addAll(
             "-Xjsr305=strict",
-            "-Xannotation-default-target=param-property"
+            "-Xannotation-default-target=param-property",
         )
     }
 }
@@ -39,12 +38,11 @@ tasks.test {
 }
 
 tasks.named("check") {
-    dependsOn("ktlintCheck")
+    dependsOn("ktlintFormat")
 }
 
 detekt {
     buildUponDefaultConfig = true
-    allRules = false
     parallel = true
 }
 
