@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: "Stashbox-Bot"
+
+logging:
+  level:
+    root: info
+  pattern:
+    console: '%d{dd.MM.yyyy HH:mm:ss.SSS} [%thread] %clr(%-5level) %logger{36} - %msg%n'
