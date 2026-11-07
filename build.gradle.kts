@@ -15,16 +15,20 @@ repositories {
 }
 
 val tgApi = providers.gradleProperty("tgApi").get()
+val dotenv = providers.gradleProperty("dotenv").get()
 
 dependencies {
-    //telegram api
-    implementation("org.telegram:telegrambots-springboot-longpolling-starter:$tgApi")
+    // telegram api
+    implementation("org.telegram:telegrambots-springboot-webhook-starter:$tgApi") {
+        exclude(group = "org.springframework.boot", module = "spring-boot-starter-jackson")
+    }
     implementation("org.telegram:telegrambots-client:$tgApi")
 
-
-    implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    developmentOnly("me.paulschwarz:springboot4-dotenv:$dotenv")
+
+    implementation("org.springframework.boot:spring-boot-jackson2")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(kotlin("test"))
@@ -61,7 +65,7 @@ tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
         "-Duser.timezone=UTC",
         "-XX:MaxRAMPercentage=70",
         "-XX:+HeapDumpOnOutOfMemoryError",
-        "-XX:HeapDumpPath=${layout.buildDirectory.file("heapdump.hprof").get().asFile}"
+        "-XX:HeapDumpPath=${layout.buildDirectory.file("heapdump.hprof").get().asFile}",
     )
 }
 
