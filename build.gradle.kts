@@ -55,6 +55,16 @@ tasks.withType<dev.detekt.gradle.Detekt>().configureEach {
     }
 }
 
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+    jvmArgs(
+        "-Dfile.encoding=UTF-8",
+        "-Duser.timezone=UTC",
+        "-XX:MaxRAMPercentage=70",
+        "-XX:+HeapDumpOnOutOfMemoryError",
+        "-XX:HeapDumpPath=${layout.buildDirectory.file("heapdump.hprof").get().asFile}"
+    )
+}
+
 detekt {
     buildUponDefaultConfig = true
     allRules = false
