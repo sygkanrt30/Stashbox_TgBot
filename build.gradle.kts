@@ -14,7 +14,14 @@ repositories {
     mavenCentral()
 }
 
+val tgApi = providers.gradleProperty("tgApi").get()
+
 dependencies {
+    //telegram api
+    implementation("org.telegram:telegrambots-springboot-longpolling-starter:$tgApi")
+    implementation("org.telegram:telegrambots-client:$tgApi")
+
+
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -41,12 +48,27 @@ tasks.named("check") {
     dependsOn("ktlintFormat")
 }
 
+tasks.withType<dev.detekt.gradle.Detekt>().configureEach {
+    reports {
+        html.required.set(true)
+        sarif.required.set(true)
+    }
+}
+
 detekt {
     buildUponDefaultConfig = true
+    allRules = false
     parallel = true
 }
 
 ktlint {
     android.set(false)
     ignoreFailures.set(true)
+    outputToConsole.set(true)
+    coloredOutput.set(true)
+
+    filter {
+        exclude("**/build/**")
+        exclude("**/generated/**")
+    }
 }
