@@ -29,16 +29,12 @@ class TelegramBotConfig(
         val path = webhookPath.trim('/')
         val webhookUrl = "${webhookBaseUrl.trimEnd('/')}/$path"
 
-        val setWebhook =
-            SetWebhook
-                .builder()
-                .url(webhookUrl)
-                .build()
+        val setWebhook = SetWebhook.builder()
+            .url(webhookUrl)
+            .build()
 
-        val deleteWebhook =
-            DeleteWebhook
-                .builder()
-                .build()
+        val deleteWebhook = DeleteWebhook.builder()
+            .build()
 
         return SpringTelegramWebhookBot
             .builder()
