@@ -23,8 +23,7 @@ class StartCommandHandler : TelegramUpdateHandler {
     override fun handle(update: Update): BotApiMethod<*>? {
         val message = update.message
         log.info("Received message with chatId: {}", message.chatId.toString())
-        return SendMessage
-            .builder()
+        return SendMessage.builder()
             .chatId(message.chatId.toString())
             .text("Hi! I'm Stashbox. Send me the material to save it!")
             .build()

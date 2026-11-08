@@ -6,9 +6,9 @@ server:
   port: 8082
 
 telegram:
-  bot-token: ${TELEGRAM_BOT_TOKEN}
-  webhook-base-url: ${TELEGRAM_WEBHOOK_BASE_URL}
-  webhook-path: ${TELEGRAM_WEBHOOK_PATH}
+  token: ${TELEGRAM_BOT_TOKEN}
+  webhookBaseUrl: ${TELEGRAM_WEBHOOK_BASE_URL}
+  webhookPath: ${TELEGRAM_WEBHOOK_PATH}
 
 logging:
   level:

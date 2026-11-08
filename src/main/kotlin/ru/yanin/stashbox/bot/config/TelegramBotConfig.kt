@@ -1,6 +1,6 @@
-package ru.yanin.stashbox.bot
+package ru.yanin.stashbox.bot.config
 
-import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient
@@ -8,26 +8,23 @@ import org.telegram.telegrambots.meta.api.methods.updates.DeleteWebhook
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook
 import org.telegram.telegrambots.meta.generics.TelegramClient
 import org.telegram.telegrambots.webhook.starter.SpringTelegramWebhookBot
+import ru.yanin.stashbox.bot.TelegramUpdateRouter
 
 @Configuration
+@EnableConfigurationProperties(TelegramConfig::class)
 class TelegramBotConfig(
-    @Value($$"${telegram.bot-token}")
-    private val botToken: String,
-    @Value($$"${telegram.webhook-base-url}")
-    private val webhookBaseUrl: String,
-    @Value($$"${telegram.webhook-path}")
-    private val webhookPath: String,
+    private val telegramConfig: TelegramConfig
 ) {
     @Bean
-    fun telegramClient(): TelegramClient = OkHttpTelegramClient(botToken)
+    fun telegramClient(): TelegramClient = OkHttpTelegramClient(telegramConfig.token)
 
     @Bean
     fun telegramWebhookBot(
         client: TelegramClient,
         updateHandler: TelegramUpdateRouter,
     ): SpringTelegramWebhookBot {
-        val path = webhookPath.trim('/')
-        val webhookUrl = "${webhookBaseUrl.trimEnd('/')}/$path"
+        val path = telegramConfig.webhookPath.trim('/')
+        val webhookUrl = "${telegramConfig.webhookBaseUrl.trimEnd('/')}/$path"
 
         val setWebhook = SetWebhook.builder()
             .url(webhookUrl)
@@ -36,8 +33,7 @@ class TelegramBotConfig(
         val deleteWebhook = DeleteWebhook.builder()
             .build()
 
-        return SpringTelegramWebhookBot
-            .builder()
+        return SpringTelegramWebhookBot.builder()
             .botPath(path)
             .updateHandler(updateHandler::handle)
             .setWebhook { client.execute(setWebhook) }
