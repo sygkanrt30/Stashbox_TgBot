@@ -1,9 +1,8 @@
-package ru.yanin.stashbox.bot.config
+package ru.yanin.stashbox.bot.config.telegram
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient
 import org.telegram.telegrambots.meta.api.methods.updates.DeleteWebhook
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook
 import org.telegram.telegrambots.meta.generics.TelegramClient
@@ -12,16 +11,12 @@ import ru.yanin.stashbox.bot.TelegramUpdateRouter
 
 @Configuration
 @EnableConfigurationProperties(TelegramConfig::class)
-class TelegramBotConfig(
-    private val telegramConfig: TelegramConfig
-) {
-    @Bean
-    fun telegramClient(): TelegramClient = OkHttpTelegramClient(telegramConfig.token)
-
+class TelegramBotConfig {
     @Bean
     fun telegramWebhookBot(
         client: TelegramClient,
         updateHandler: TelegramUpdateRouter,
+        telegramConfig: TelegramConfig,
     ): SpringTelegramWebhookBot {
         val path = telegramConfig.webhookPath.trim('/')
         val webhookUrl = "${telegramConfig.webhookBaseUrl.trimEnd('/')}/$path"
