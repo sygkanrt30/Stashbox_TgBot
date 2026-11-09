@@ -16,6 +16,7 @@ repositories {
 
 val tgApi = providers.gradleProperty("tgApi").get()
 val dotenv = providers.gradleProperty("dotenv").get()
+val loggingInterceptor = providers.gradleProperty("loggingInterceptor").get()
 
 dependencies {
     // telegram api
@@ -23,6 +24,8 @@ dependencies {
         exclude(group = "org.springframework.boot", module = "spring-boot-starter-jackson")
     }
     implementation("org.telegram:telegrambots-client:$tgApi")
+
+    implementation("com.squareup.okhttp3:logging-interceptor:$loggingInterceptor")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

@@ -1,4 +1,4 @@
-package ru.yanin.stashbox.bot.config
+package ru.yanin.stashbox.bot.config.telegram
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
@@ -6,5 +6,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class TelegramConfig(
     val token: String,
     val webhookBaseUrl: String,
-    val webhookPath: String
+    val webhookPath: String,
 )
