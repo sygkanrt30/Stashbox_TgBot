@@ -1,4 +1,4 @@
-package ru.yanin.stashbox.bot.config.telegram
+package ru.yanin.stashbox.bot.config
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

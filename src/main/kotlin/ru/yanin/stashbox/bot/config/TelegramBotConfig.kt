@@ -1,4 +1,4 @@
-package ru.yanin.stashbox.bot.config.telegram
+package ru.yanin.stashbox.bot.config
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
