@@ -17,6 +17,7 @@ repositories {
 val tgApi = providers.gradleProperty("tgApi").get()
 val dotenv = providers.gradleProperty("dotenv").get()
 val loggingInterceptor = providers.gradleProperty("loggingInterceptor").get()
+val p6spy = providers.gradleProperty("p6spy").get()
 
 dependencies {
     // telegram api
@@ -25,14 +26,20 @@ dependencies {
     }
     implementation("org.telegram:telegrambots-client:$tgApi")
 
+    // tools
     implementation("com.squareup.okhttp3:logging-interceptor:$loggingInterceptor")
-
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     developmentOnly("me.paulschwarz:springboot4-dotenv:$dotenv")
+    implementation("p6spy:p6spy:$p6spy")
 
+    // dependencies
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-liquibase")
     implementation("org.springframework.boot:spring-boot-jackson2")
+    implementation("org.postgresql:postgresql")
 
+    // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(kotlin("test"))
 }
