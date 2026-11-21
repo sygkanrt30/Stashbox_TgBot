@@ -6,14 +6,15 @@ import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.generics.TelegramClient
-import ru.yanin.stashbox.bot.TelegramUpdateHandler
-import ru.yanin.stashbox.bot.keyboard.getInlineKeyboard
-import ru.yanin.stashbox.bot.keyboard.getReplyKeyboard
+import ru.yanin.stashbox.bot.keyboard.section_managment.getInlineKeyboard
+import ru.yanin.stashbox.bot.keyboard.section_managment.getReplyKeyboard
+import ru.yanin.stashbox.service.user.UserService
 import kotlin.uuid.Uuid
 
 @Component
 class StartCommandHandler(
     val telegramClient: TelegramClient,
+    val userService: UserService,
 ) : TelegramUpdateHandler {
     companion object {
         private val log = LoggerFactory.getLogger(StartCommandHandler::class.java)
@@ -26,8 +27,17 @@ class StartCommandHandler(
 
     override fun handle(update: Update): BotApiMethod<*>? {
         val message = update.message
-        val chatId = message.chatId
-        log.info("Received message with chatId: {}", chatId.toString())
+        val chatId = message.chatId.toString()
+        val user = message.from
+        log.info("Received message with chatId: {}", chatId)
+
+        if (user.isBot) {
+            log.debug("Ignoring bot {}/{}", user.id, user.userName)
+            // todo add this userID to bot's table and ignore them at http filter level
+            return null
+        }
+
+        userService.ensureExists(user)
 
         telegramClient.execute(
             SendMessage.builder()
@@ -39,7 +49,7 @@ class StartCommandHandler(
 
         telegramClient.execute(
             SendMessage.builder()
-                .chatId(chatId.toString())
+                .chatId(chatId)
                 .text("Select a section")
                 .replyMarkup(
                     getInlineKeyboard(

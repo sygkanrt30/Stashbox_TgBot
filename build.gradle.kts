@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.4.0"
     kotlin("plugin.spring") version "2.4.0"
+    kotlin("plugin.jpa") version "2.4.0"
     id("org.springframework.boot")
     id("io.spring.dependency-management")
     id("dev.detekt")
@@ -18,6 +19,7 @@ val tgApi = providers.gradleProperty("tgApi").get()
 val dotenv = providers.gradleProperty("dotenv").get()
 val loggingInterceptor = providers.gradleProperty("loggingInterceptor").get()
 val p6spy = providers.gradleProperty("p6spy").get()
+val testContainer = providers.gradleProperty("testContainer").get()
 
 dependencies {
     // telegram api
@@ -40,7 +42,10 @@ dependencies {
     implementation("org.postgresql:postgresql")
 
     // test
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
+    testImplementation("org.testcontainers:postgresql:$testContainer")
+    testImplementation("org.testcontainers:junit-jupiter:$testContainer")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation(kotlin("test"))
 }
 
