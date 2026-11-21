@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS tg_user
+(
+    id BIGINT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    language_code VARCHAR(7),
+    start_use_bot_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_user_id ON tg_user (id);

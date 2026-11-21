@@ -1,4 +1,4 @@
-package ru.yanin.stashbox.bot
+package ru.yanin.stashbox.bot.command.handlers
 
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.objects.Update

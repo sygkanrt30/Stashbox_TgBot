@@ -21,9 +21,9 @@ spring:
         transaction:
           jta:
             platform: none
-    database: postgresql
+    database: PostgreSQL
   liquibase:
-    change-log: classpath:migration/liquibase/changelog-master.yaml
+    change-log: classpath:db/changelog/postgres.changelog-master.yaml
 
 server:
   port: 8082

@@ -1,4 +1,4 @@
-package ru.yanin.stashbox.bot.keyboard
+package ru.yanin.stashbox.bot.keyboard.section_managment
 
 enum class SectionsManagementButtons(
     val txt: String,
