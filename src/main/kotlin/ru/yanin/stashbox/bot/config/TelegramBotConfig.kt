@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.updates.DeleteWebhook
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook
 import org.telegram.telegrambots.meta.generics.TelegramClient
 import org.telegram.telegrambots.webhook.starter.SpringTelegramWebhookBot
-import ru.yanin.stashbox.bot.TelegramUpdateRouter
+import ru.yanin.stashbox.bot.routing.TelegramUpdateDispatcher
 
 @Configuration
 @EnableConfigurationProperties(TelegramConfig::class)
@@ -15,7 +15,7 @@ class TelegramBotConfig {
     @Bean
     fun telegramWebhookBot(
         client: TelegramClient,
-        updateHandler: TelegramUpdateRouter,
+        updateDispatcher: TelegramUpdateDispatcher,
         telegramConfig: TelegramConfig,
     ): SpringTelegramWebhookBot {
         val path = telegramConfig.webhookPath.trim('/')
@@ -30,7 +30,7 @@ class TelegramBotConfig {
 
         return SpringTelegramWebhookBot.builder()
             .botPath(path)
-            .updateHandler(updateHandler::handle)
+            .updateHandler(updateDispatcher::dispatch)
             .setWebhook { client.execute(setWebhook) }
             .deleteWebhook { client.execute(deleteWebhook) }
             .build()

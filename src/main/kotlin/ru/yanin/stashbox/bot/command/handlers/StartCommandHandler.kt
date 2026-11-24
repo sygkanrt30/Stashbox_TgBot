@@ -32,12 +32,6 @@ class StartCommandHandler(
         val user = message.from
         log.info("Received message with chatId: {}", chatId)
 
-        if (user.isBot) {
-            log.debug("Ignoring bot {}/{}", user.id, user.userName)
-            // todo ignore them at dispatcher
-            return null
-        }
-
         userService.ensureExists(user)
 
         telegramClient.execute(
