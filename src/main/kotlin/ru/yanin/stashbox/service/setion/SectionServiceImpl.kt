@@ -8,9 +8,6 @@ import kotlin.uuid.Uuid
 class SectionServiceImpl(
     private val sectionRepository: SectionRepository,
 ) : SectionService {
-
-    override fun loadAllSectionsByUserId(userId: Long): Map<String, Uuid> {
-        return sectionRepository.findAllByUserId(userId)
-            .associate { section -> section.title to section.id }
-    }
+    override fun loadAllSectionsByUserId(userId: Long): Map<String, Uuid> = sectionRepository.findAllByUserId(userId)
+        .associate { section -> section.title to section.id }
 }

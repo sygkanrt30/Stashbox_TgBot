@@ -7,6 +7,5 @@ import kotlin.uuid.Uuid
 
 @Repository
 interface SectionRepository : JpaRepository<Section, Uuid> {
-
     fun findAllByUserId(userId: Long): MutableSet<Section>
 }
