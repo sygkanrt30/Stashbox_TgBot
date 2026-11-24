@@ -29,9 +29,9 @@ class StartCommandHandler(
     override fun handle(update: Update): BotApiMethod<*>? {
         val message = update.message
         val chatId = message.chatId.toString()
-        val user = message.from
         log.info("Received message with chatId: {}", chatId)
 
+        val user = message.from
         userService.ensureExists(user)
 
         telegramClient.execute(
