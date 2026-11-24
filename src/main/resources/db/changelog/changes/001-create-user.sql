@@ -5,5 +5,3 @@ CREATE TABLE IF NOT EXISTS tg_user
     language_code VARCHAR(7),
     start_use_bot_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE INDEX idx_user_id ON tg_user (id);

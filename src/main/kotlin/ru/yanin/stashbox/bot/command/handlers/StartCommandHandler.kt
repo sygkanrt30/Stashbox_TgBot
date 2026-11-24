@@ -8,13 +8,14 @@ import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.generics.TelegramClient
 import ru.yanin.stashbox.bot.keyboard.section_managment.getInlineKeyboard
 import ru.yanin.stashbox.bot.keyboard.section_managment.getReplyKeyboard
+import ru.yanin.stashbox.service.setion.SectionService
 import ru.yanin.stashbox.service.user.UserService
-import kotlin.uuid.Uuid
 
 @Component
 class StartCommandHandler(
     val telegramClient: TelegramClient,
     val userService: UserService,
+    val sectionService: SectionService,
 ) : TelegramUpdateHandler {
     companion object {
         private val log = LoggerFactory.getLogger(StartCommandHandler::class.java)
@@ -33,7 +34,7 @@ class StartCommandHandler(
 
         if (user.isBot) {
             log.debug("Ignoring bot {}/{}", user.id, user.userName)
-            // todo add this userID to bot's table and ignore them at http filter level
+            // todo ignore them at dispatcher
             return null
         }
 
@@ -51,14 +52,7 @@ class StartCommandHandler(
             SendMessage.builder()
                 .chatId(chatId)
                 .text("Select a section")
-                .replyMarkup(
-                    getInlineKeyboard(
-                        mapOf(
-                            Pair("Section1", Uuid.random()),
-                            Pair("Section2", Uuid.random()),
-                        ),
-                    ),
-                ) // todo fill the map<String,Uuid> of section by db
+                .replyMarkup(getInlineKeyboard(sectionService.loadAllSectionsByUserId(user.id)))
                 .build(),
         )
         return null
