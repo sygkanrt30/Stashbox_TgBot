@@ -3,19 +3,16 @@ package ru.yanin.stashbox.bot.command.handlers
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.generics.TelegramClient
-import ru.yanin.stashbox.bot.keyboard.section_managment.getInlineKeyboard
-import ru.yanin.stashbox.bot.keyboard.section_managment.getReplyKeyboard
-import ru.yanin.stashbox.service.setion.SectionService
+import ru.yanin.stashbox.bot.message.utils.MessageFactory
 import ru.yanin.stashbox.service.user.UserService
 
 @Component
 class StartCommandHandler(
-    val telegramClient: TelegramClient,
-    val userService: UserService,
-    val sectionService: SectionService,
+    private val telegramClient: TelegramClient,
+    private val userService: UserService,
+    private val messageFactory: MessageFactory,
 ) : TelegramUpdateHandler {
     companion object {
         private val log = LoggerFactory.getLogger(StartCommandHandler::class.java)
@@ -31,24 +28,10 @@ class StartCommandHandler(
         val chatId = message.chatId.toString()
         log.info("Received message with chatId: {}", chatId)
 
-        val user = message.from
-        userService.ensureExists(user)
+        userService.ensureExists(message.from)
 
-        telegramClient.execute(
-            SendMessage.builder()
-                .chatId(chatId)
-                .text("Hi! I'm Stashbox. Send me the material to save it!")
-                .replyMarkup(getReplyKeyboard())
-                .build(),
-        )
-
-        telegramClient.execute(
-            SendMessage.builder()
-                .chatId(chatId)
-                .text("Select a section")
-                .replyMarkup(getInlineKeyboard(sectionService.loadAllSectionsByUserId(user.id)))
-                .build(),
-        )
+        telegramClient.execute(messageFactory.createFirstHiMessage(chatId))
+        telegramClient.execute(messageFactory.createSelectSectionMessage(chatId, message.from.id))
         return null
     }
 }
